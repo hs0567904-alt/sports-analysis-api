@@ -1,0 +1,39 @@
+name: Extract API
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Extrair API
+        run: |
+          mkdir -p extracted
+          unzip -o "Sem título.zip" -d extracted
+
+          if [ -d "extracted/sports-analysis-api" ]; then
+            cp -R extracted/sports-analysis-api/. .
+          else
+            cp -R extracted/. .
+          fi
+
+          rm -rf extracted
+          rm -f "Sem título.zip"
+
+      - name: Salvar arquivos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Extract API project" || exit 0
+          git push
