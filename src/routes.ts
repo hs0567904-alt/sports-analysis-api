@@ -93,8 +93,8 @@ export async function routes(app: FastifyInstance) {
   app.get("/api/players/:playerId", async (request) => {
     const id = Number((request.params as { playerId: string }).playerId);
     const player = await query("SELECT * FROM players WHERE id=$1", [id]);
-    const stats = await query("SELECT * FROM player_statistics WHERE player_id=$1", [id]);
-    const lineup = await query(
+    const stats = await query<any>("SELECT * FROM player_statistics WHERE player_id=$1", [id]);
+    const lineup = await query<any>(
       `SELECT starter, minutes FROM lineups
        WHERE player_id=$1 ORDER BY id DESC LIMIT 5`,
       [id]

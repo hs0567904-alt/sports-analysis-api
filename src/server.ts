@@ -31,7 +31,7 @@ app.setErrorHandler((error, _request, reply) => {
   app.log.error(error);
   reply.code((error as any).statusCode ?? 500).send({
     error: "internal_error",
-    message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message
+    message: process.env.NODE_ENV === "production" ? "Internal server error" : (error as any)?.message
   });
 });
 
